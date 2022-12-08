@@ -1,9 +1,28 @@
 import Head from "next/head";
 import Image from "next/image";
-import Navbar from "../components/Navbar";
+import { useEffect, useState } from "react";
+import Navbar from "../components/Navbar/Navbar";
 import styles from "../styles/Home.module.css";
+import axios from 'axios';
+import ImgMediaCard from "../components/ImgMediaCard/ImgMediaCard";
+import { Box } from "@mui/system";
+
 
 export default function Home() {
+  const [products, setProducts] = useState<any>()
+  const getRes = async () => {
+    try {
+      const response = await axios.get('https://mern-ecomm-backend.onrender.com/api/v1/products');
+      console.log(response.data.allProducts);
+      setProducts(response.data.allProducts)
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  useEffect(() => {
+    getRes()
+  }, [])
+
   return (
     <>
       <Head>
@@ -12,6 +31,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
+      <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+        {products?.map((c: any, i: number) => {
+          return <ImgMediaCard {...c} />
+        })}
+      </Box>
+
     </>
   );
 }
