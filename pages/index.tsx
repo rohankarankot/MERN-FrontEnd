@@ -33,7 +33,7 @@ export default function Home() {
       <Navbar />
       <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
         {products?.map((c: any, i: number) => {
-          return <ImgMediaCard {...c} />
+          return <ImgMediaCard {...c} key={i} />
         })}
       </Box>
 
